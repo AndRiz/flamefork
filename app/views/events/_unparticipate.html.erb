@@ -1,0 +1,4 @@
+<% # linked to the destroy action in the Participations controller %>
+<%= form_for(current_user.participations.find_by_participated_id(@event), html: { method: :delete }, remote: true ) do |f| %>
+    <%= f.submit 'Unparticipate', class: 'btn btn-large' %>
+<% end %>

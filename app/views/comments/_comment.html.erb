@@ -1,0 +1,23 @@
+<li class="post">
+
+  <% @user=User.find(comment.user_id) %>
+  <%= link_to gravatar_for(@user), @user %>
+
+  <strong> <%= link_to  @user.name, @user %>:</strong>
+
+  <% @event=Event.find(comment.event_id) %>
+  <% @creator=User.find(@event.user_id) %>
+
+  <strong><%= comment.title %></strong>
+  <span class="content"><%= comment.content %></span>
+    <span class="timestamp">
+        Commented <%= time_ago_in_words(comment.created_at) %> ago
+    </span>
+  <% if (current_user?(comment.user) or current_user?(@creator)) %>
+      | <%= link_to 'delete', comment, method: :delete, data: { confirm: 'Are you sure?' }, title: comment.content %>
+  <% end %>
+
+
+
+
+</li>

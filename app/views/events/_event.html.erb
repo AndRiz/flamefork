@@ -1,0 +1,23 @@
+<li>
+
+  <div style="float:left">
+    <%= link_to ( image_tag("event.png", :alt => "event")), user_event_path(event.user, event) %>
+  </div>
+ <% @user= User.find(event.user_id) %>
+
+  <div float="left">
+    <strong>  <%= link_to event.name, user_event_path(event.user, event) %></strong>
+    <span class="content">Location: <%= event.location %></span>
+  <span class="content">When: <%= event.time %></span>
+  <span class="content">Maximum participants: <%= event.max%></span>
+
+    <span class="timestamp">
+        Created by  <%= @user.name %> <%= time_ago_in_words(event.created_at) %> ago
+    </span>
+    <% if current_user?(event.user) %>
+    | <%= link_to 'delete', user_event_path(event.user, event), method: :delete, data: { confirm: 'Are you sure?' }, title: event.name %>
+
+  <% end %>
+  </div>
+</li>
+

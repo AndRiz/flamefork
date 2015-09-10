@@ -1,0 +1,36 @@
+<% #Provide the page title in a symbol to application.html.erb to avoid duplication %>
+<% provide(:title, 'Mails') %>
+<% @user = current_user %>
+
+
+
+<div class="row">
+  <aside class="col-md-4">
+    <section>
+      <%= gravatar_for @user %>
+      <h1><%= @user.name %></h1>
+      <span><%= link_to 'View my profile', @user %></span>
+      <span><b>Posts:</b> <%= @user.posts.count %></span>
+    </section>
+    <section>
+      <%= render 'shared/stats' %>
+    </section>
+
+    <div id="trash">
+      <%= image_tag("trash.png", :alt => "trash", :ondrop => "drop(event)", :ondragover => "allowDrop(event)") %>
+    </div>
+
+  </aside>
+
+  <div class="col-md-8">
+    <h3>Mailbox (<%= @user.mails.count %>) </h3>
+    <% if @mails.any? %>
+
+        <ul class="posts">
+          <%= render @mails %>
+        </ul>
+
+        <%= will_paginate @mails%>
+    <% end %>
+  </div>
+</div>

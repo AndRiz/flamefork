@@ -1,0 +1,6 @@
+<% # linked to the create action in the Participations controller %>
+<%= form_for(current_user.participations.build(participated_id: @event.id), remote: true) do |f| %>
+    <% # the hidden field contains the information needed for partecipate an event %>
+    <div><%= f.hidden_field :participated_id %></div>
+    <%= f.submit 'Participate', class: 'btn btn-large btn-primary' %>
+<% end %>

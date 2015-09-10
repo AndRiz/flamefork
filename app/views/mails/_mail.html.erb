@@ -1,0 +1,21 @@
+<div draggable="true" id="<%= mail.id %>" ondragstart="drag(event)">
+  <li>
+
+  <% @user=User.find(mail.sender_id) %>
+    <% @mail=Mail.find(mail.id) %>
+
+  <%= link_to gravatar_for(@user), @user %>
+
+
+  <strong> <%= link_to  mail.sender_name, @user %>:</strong>
+  <span class="content"><%= link_to mail.message, @mail %> </span>
+    <span class="timestamp">
+     Sent <%= time_ago_in_words(mail.created_at) %> ago
+    </span>
+
+
+
+</li>
+
+
+ </div>

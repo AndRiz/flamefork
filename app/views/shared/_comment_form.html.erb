@@ -1,0 +1,14 @@
+<div id="comment_form">
+<%= form_for Comment.new do |f| %>
+    <%= render 'shared/error_messages', object: f.object %>
+    <div class="row">
+      <div class="field col-md-9">
+        <%= f.text_field :title, placeholder: 'Summary' %>
+        <%= f.text_area :content, placeholder: 'What are you thinking about the event?' %>
+        <%= f.hidden_field :event_id, :value => @event.id %>
+
+        <%= f.submit 'Comment', class: 'btn btn-primary btn-home' %>
+      </div>
+    </div>
+<% end %>
+</div>

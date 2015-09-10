@@ -1,0 +1,48 @@
+
+
+<% #Provide the page title in a symbol to application.html.erb to avoid duplication %>
+<% provide(:title, @mail.message) %>
+
+
+<% #Define the @user (the receiver) to have the correct stats %>
+<% @other_user=User.find(@mail.sender_id) %>
+<% @user=current_user %>
+
+
+<div class="row">
+  <aside class="col-md-4">
+    <section>
+      <%= gravatar_for @user %>
+      <h1><%= @user.name %></h1>
+      <span><%= link_to 'View my profile', @user %></span>
+      <span><b>Posts:</b> <%= @user.posts.count %></span>
+    </section>
+    <section>
+      <%= render 'shared/stats' %>
+    </section>
+    <div id="trash">
+      <%= image_tag("trash.png", :alt => "trash", :ondrop => "drop(event)", :ondragover => "allowDrop(event)") %>
+    </div>
+  </aside>
+
+
+<div class="col-md-8" draggable="true" id="<%= @mail.id %>" ondragstart="drag(event)">
+
+<%= link_to gravatar_for(@other_user), @other_user %>
+<strong> <%= link_to  @mail.sender_name, @other_user %>:</strong>
+<span class="content"><%= @mail.message%></span>
+<span class="timestamp">Sent <%= time_ago_in_words(@mail.created_at) %> ago</span>
+<%= form_for(@other_user.mails.build(receiver_id: @other_user.id),remote: true) do |f| %>
+
+    <% # the hidden field contains the information needed for sending the reply message %>
+    <div class="row">
+      <div class="field col-md-10" style="padding-left: 0px; padding-top: 10px">
+        <%= f.hidden_field :receiver_id %>
+        <%= f.text_area :message, :placeholder => "Send your reply to #{@mail.sender_name}" %>
+        <%= f.submit 'Reply', class: 'btn btn-large btn-primary' %>
+      </div>
+    </div>
+<% end %>
+</div>
+
+</div>

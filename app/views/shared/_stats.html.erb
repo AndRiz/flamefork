@@ -1,0 +1,48 @@
+<% # we are going to use this partial in the home and in the user profile:
+   # in the home @user is nil and needs to be filled %>
+<% @user ||= current_user %>
+
+
+<div class="stats">
+  <a href="<%= following_user_path(@user) %>">
+    <strong id="following" class="stat">
+      <%= @user.followed_users.count %>
+    </strong>
+    Following
+  </a>
+
+
+  <a href="<%= followers_user_path(@user) %>">
+    <strong id="followers" class="stat">
+      <%= @user.followers.count %>
+    </strong>
+    Followers
+  </a>
+
+
+  <% # this count() is present only if the user is a chef %>
+
+  <% if correct_chef?(@user) %>
+  <a href="<%= myevents_user_path(@user) %>">
+    <strong id="events" class="stat">
+      <%= @user.events.count %>
+    </strong>
+    My events
+  </a>
+      <% end %>
+
+  <% # this count() is relative to the received private message %>
+
+  <% if current_user?(@user) %>
+      <a href="<%= senders_user_path(@user) %>">
+        <strong id="mails" class="stat">
+          <%= @user.mails.count %>
+        </strong>
+        Mailbox
+      </a>
+
+
+  <% end %>
+
+
+</div>

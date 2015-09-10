@@ -1,0 +1,81 @@
+<% #Provide the page title in a symbol to application.html.erb to avoid duplication %>
+<% provide(:title, @event.name) %>
+<% @user ||= current_user %>
+
+
+<div class="row">
+  <aside class="col-md-2">
+    <section>
+
+    </section>
+
+  </aside>
+
+  <div class="col-md-8">
+    <h1><%= @event.name %>
+
+    </h1>
+
+    <div id="map"></div>
+
+    <div>
+      <h2><strong>Created by: <%= link_to @user.name, @user %></strong> </h2>
+      <p><strong>Where:</strong> <%= @event.location %></p>
+      <p><strong>When:</strong> <%= @event.time %></p>
+      <p>
+        <strong id="following" class="stat">
+        Participants:
+          </strong>
+          <span id="participants"><%= @event.participants.count %></span> / <%= @event.max %> (Maximum capacity)
+      </p>
+      <%= render 'participate_form' if signed_in? %>
+    </div>
+    </br>
+    <% if @current_user.participating?(@event) %>
+      <%= render 'shared/comment_form' %>
+     <% end%>
+
+      <% if @event.comments.any? %>
+          <h3>Event comments (<%= @event.comments.count %>)</h3>
+          <ol class="post">
+            <%= render @comments %>
+          </ol>
+          <%= will_paginate @comments %>
+      <% end %>
+
+
+
+
+
+  </div>
+
+</div>
+
+
+<script type="text/javascript">
+    var directionsDisplay = new google.maps.DirectionsRenderer();
+    var directionsService = new google.maps.DirectionsService();
+
+    function calcRoute() {
+        var origin      = new google.maps.LatLng(<%=@event.location_lat%>,<%=@event.location_lng%>);
+        var destination = new google.maps.LatLng(<%=@event.location_lat%>,<%=@event.location_lng%>);
+        var request = {
+            origin:      origin,
+            destination: destination,
+            travelMode:  google.maps.TravelMode.WALKING
+
+        };
+        directionsService.route(request, function(response, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                directionsDisplay.setDirections(response);
+            }
+        });
+    }
+
+    calcRoute();
+
+    var handler = Gmaps.build('Google');
+    handler.buildMap({ internal: {id: 'map'}}, function(){
+        directionsDisplay.setMap(handler.getMap());
+    });
+</script>

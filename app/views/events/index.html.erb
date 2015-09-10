@@ -1,0 +1,19 @@
+<% #Provide the page title in a symbol to application.html.erb to avoid duplication %>
+<% provide(:title, 'Events') %>
+<% @user = current_user %>
+
+
+
+    <h1>Events
+    </h1>
+<% if correct_chef?(@user) %>
+    <%= link_to "Create a new event", new_event_path, class:"btn btn-primary btn-small", role:"button"%>
+<% end %>
+    <% if @events.any? %>
+        <ul class="posts">
+          <%= render @events %>
+        </ul>
+        <%= will_paginate @events%>
+    <% end %>
+
+

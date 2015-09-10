@@ -1,0 +1,36 @@
+<% #Provide the page title in a symbol to application.html.erb to avoid duplication %>
+<% provide :title, 'New event' %>
+
+<h1>Chef event creation</h1>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_for [current_user, @event] do |f| %>
+        <%= render 'shared/error_messages', object: f.object %>
+        <%= f.label :name %>
+        <%= f.text_field :name, :placeholder => "Chose a title for your event"  %>
+        <%= f.label :location %>
+        <%= f.text_field :location, :placeholder => "City, address, etc." %>
+        <%= f.label :time, 'Date & Time ' %>
+          <div class="row">
+            <div class='col-sm-6'>
+              <div class="form-group">
+                <div class='input-group date' id='datetimepicker1'>
+                  <%= f.text_field :time, :class =>"form-control", :value => "glyphicon-calendar", :placeholder => "mm/dd/yy - hh/mm" %>
+                  <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+              </div>
+            </div>
+            <script type="text/javascript">
+                $(function () {
+                    $('#datetimepicker1').datetimepicker();
+                });
+            </script>
+          </div>
+        <%= f.label :max, 'Maximum number of partecipants' %>
+        <%= f.text_field :max , :placeholder => "This can be only a number"%>
+        <%= f.submit 'Create a new event', class: 'btn btn-primary btn-lg' %>
+    <% end %>
+  </div>
+</div>
